@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-
 function Square(props) {
   return (
     <button className="square"
@@ -40,9 +39,13 @@ class Board extends React.Component {
 
   render() {
     const winner = calculateWinner(this.state.squares);
+    console.log(winner);
     let status;
-    if (winner) {
+    if (winner === 'X' || winner === 'O') {
       status = 'Winner: ' + winner;
+    }
+    else if (winner === 'draw') {
+      status = 'Result: Draw';
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
@@ -96,11 +99,22 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
+  let drawCatch = 0;
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
+    
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
+
+    if (squares[a] && squares[b] && squares[c]) {
+      drawCatch++;
+      console.log()
+      if (drawCatch === 8) 
+        return 'draw';
+    }
+
   }
   return null;
 }
