@@ -39,12 +39,10 @@ class Board extends React.Component {
 
   render() {
     const winner = calculateWinner(this.state.squares);
-    console.log(winner);
     let status;
-    if (winner === 'X' || winner === 'O') {
+    if (winner) {
       status = 'Winner: ' + winner;
-    }
-    else if (winner === 'draw') {
+    } else if (this.state.squares.indexOf(null) === -1) {
       status = 'Result: Draw';
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
@@ -100,21 +98,11 @@ function calculateWinner(squares) {
     [2, 4, 6],
   ];
 
-  let drawCatch = 0;
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
-    
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
-
-    if (squares[a] && squares[b] && squares[c]) {
-      drawCatch++;
-      console.log()
-      if (drawCatch === 8) 
-        return 'draw';
-    }
-
   }
   return null;
 }
