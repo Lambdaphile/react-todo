@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { type } from 'os';
 
 function Square(props) {
   return (
@@ -60,13 +61,15 @@ class Game extends React.Component {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
+
     squares[i] = this.state.xIsNext ? 'X' : 'O';
-    this.setState({ 
+    this.setState({
       history: history.concat([{
         squares: squares
       }]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      xIsNext: !this.state.xIsNext,
+      moveLocation: locateMove(i)
     });
   }
 
@@ -80,13 +83,15 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
+    const a = history[this.state.stepNumber];
+    const b = history[this.state.stepNumber - 1];
+
     const winner = calculateWinner(current.squares);
     const isDraw = (current.squares.indexOf(null) === -1) ? true : false;
-
     const moves = history.map((step, move) => {
       const desc = move ?
-      'Go to move #' + move :
-      'Go to game start';
+        'Go to move #' + move + ' - (' + this.state.moveLocation  + ')':
+        'Go to game start';
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -139,6 +144,31 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function locateMove(i) {
+  switch (i) {
+    case 0:
+      return 'col 1, row 1';
+    case 1:
+      return 'col 2, row 1';
+    case 2:
+      return 'col 3, row 1';
+    case 3:
+      return 'col 1, row 2';
+    case 4:
+      return 'col 2, row 2';
+    case 5:
+      return 'col 3, row 2';
+    case 6:
+      return 'col 1, row 3';
+    case 7:
+      return 'col 2, row 3';
+    case 8:
+      return 'col 3, row 3';
+    default:
+      console.log('What are you?! This is impossible!'); // ...xD
+  }
 }
 
 // ========================================
