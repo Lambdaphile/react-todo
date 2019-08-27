@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { type } from 'os';
 
 function Square(props) {
   return (
@@ -92,7 +91,9 @@ class Game extends React.Component {
         'Go to game start';
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button onClick={() => this.jumpTo(move)}>
+            {move == this.state.stepNumber ? <b>{desc}</b> : desc}
+          </button>
         </li>
       );
     });
