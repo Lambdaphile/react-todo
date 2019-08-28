@@ -25,18 +25,18 @@ class Board extends React.Component {
       onClick={() => this.props.onClick(i)} />;
   }
 
-  renderThreeSquares(i) {
-    const threeSquares = []
+  buildRow(i) {
+    const row = []
     for (let j = i; j < (i + 3); j++) {
-      threeSquares.push(this.renderSquare(j));
+      row.push(this.renderSquare(j));
     }
-    return threeSquares;
+    return row;
   }
 
   renderBoard() {
     const board = [];
     for (let i = 0; i < 9; i += 3) {
-      board.push(<BoardRow square={this.renderThreeSquares(i)}/>);
+      board.push(<BoardRow square={this.buildRow(i)}/>);
     }
     return board;
   }
