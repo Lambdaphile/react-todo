@@ -4,6 +4,7 @@ body {
 }
 
 ol, ul {
+  margin-top: 5px;
   padding-left: 30px;
 }
 
@@ -47,4 +48,8 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+}
+
+.toggle-order {
+  margin: 15px 0 0px 30px;
 }
