@@ -11,14 +11,6 @@ function Square(props) {
   );
 }
 
-function BoardRow(props) {
-  return (
-    <div key={props.row} className="board-row">
-      {props.square}
-    </div>
-  );
-}
-
 class Board extends React.Component {
   renderSquare(i) {
     return <Square value={this.props.squares[i]}
@@ -26,7 +18,7 @@ class Board extends React.Component {
   }
 
   buildRow(i) {
-    const row = []
+    const row = [];
     for (let j = i; j < (i + 3); j++) {
       row.push(this.renderSquare(j));
     }
@@ -36,7 +28,7 @@ class Board extends React.Component {
   renderBoard() {
     const board = [];
     for (let i = 0; i < 9; i += 3) {
-      board.push(<BoardRow square={this.buildRow(i)}/>);
+      board.push(<div className="board-row">{this.buildRow(i)}</div>);
     }
     return board;
   }
@@ -54,14 +46,18 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // I have to understand this strange combination
+      // of objects and arrays...
       history: [{
         squares: Array(9).fill(null)
       }],
       xIsNext: true,
-      stepNumber: 0
+      stepNumber: 0,
+      moveLocation: null
     }
   }
 
+  // Have to understand this as well...
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
@@ -95,6 +91,7 @@ class Game extends React.Component {
 
     const winner = calculateWinner(current.squares);
     const isDraw = (current.squares.indexOf(null) === -1) ? true : false;
+
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move + ' - (' + this.state.moveLocation  + ')':
