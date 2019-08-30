@@ -46,19 +46,15 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // I have to understand this strange combination
-      // of objects and arrays...
       history: [{
         squares: Array(9).fill(null)
       }],
       xIsNext: true,
       stepNumber: 0,
-      moveLocation: null,
       order: 'ascending'
     }
   }
 
-  // Have to understand this as well...
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
@@ -75,7 +71,6 @@ class Game extends React.Component {
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
-      moveLocation: locateMove(i)
     });
   }
 
@@ -87,21 +82,17 @@ class Game extends React.Component {
   }
 
   toggleOrder() {
-    if (this.state.order === 'ascending') 
+    if (this.state.order === 'ascending')
       this.setState({ order: 'descending' });
     else 
       this.setState({ order: 'ascending'});
   }
 
   renderMoves(moves) {
-    if (this.state.order === 'ascending')
-      return (
-        <ol>{moves}</ol>
-      );
-    else
-      return (
-        <ol reversed>{Array.from(moves).reverse()}</ol>
-      );
+    if (this.state.order === 'ascending') {
+      return <ol>{moves}</ol>
+    }
+    return <ol reversed>{Array.from(moves).reverse()}</ol>
   }
 
   render() {
@@ -113,10 +104,10 @@ class Game extends React.Component {
 
     let moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move #' + move + ' - (' + this.state.moveLocation  + ')':
+        'Go to move #' + move + ' - (' + locateMove(move - 1)  + ')':
         'Go to game start';
-      return (
-        <li key={move}>
+        return (
+          <li key={move}>
           <button onClick={() => this.jumpTo(move)}>
             {move === this.state.stepNumber ? <b>{desc}</b> : desc}
           </button>
@@ -143,7 +134,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <button 
+          <button
             className="toggle-order"
             onClick={() => this.toggleOrder(moves)}
           >
