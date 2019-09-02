@@ -10,7 +10,8 @@ export default class Game extends React.Component {
       }],
       order: 'ascending',
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
+      moveLocation: []
     }
   }
 
@@ -25,12 +26,14 @@ export default class Game extends React.Component {
 
     squares[i] = this.state.xIsNext ? 'X' : 'O';
 
+    const currentLocation = this.state.moveLocation.slice();
     this.setState({
       history: history.concat([{
         squares: squares
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+      moveLocation: currentLocation.concat(locateMove(i))
     });
   }
 
@@ -64,7 +67,7 @@ export default class Game extends React.Component {
 
     let moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + ' (' + this.state.moveLocation[move-1] + ')':
         'Go to game start';
         return (
           <li key={move}>
